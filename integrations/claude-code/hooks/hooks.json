@@ -1,0 +1,11 @@
+{
+  "description": "POST each Claude Code turn result, and permission waits, to an entry in your PostPad. POSTPAD_INGEST_URL / POSTPAD_TOKEN env vars (e.g. in a project's .claude/settings.local.json `env`) override the plugin config for that project.",
+  "hooks": {
+    "Stop": [
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/post.sh\"", "timeout": 15 }] }
+    ],
+    "Notification": [
+      { "matcher": "permission_prompt", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/post.sh\"", "timeout": 15 }] }
+    ]
+  }
+}

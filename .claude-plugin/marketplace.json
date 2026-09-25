@@ -1,0 +1,14 @@
+{
+  "name": "postpad",
+  "description": "PostPad integrations for Claude Code",
+  "owner": {
+    "name": "PostPad"
+  },
+  "plugins": [
+    {
+      "name": "postpad",
+      "source": "./integrations/claude-code",
+      "description": "Keep a PostPad entry updated from Claude Code (finished turns + permission waits)."
+    }
+  ]
+}

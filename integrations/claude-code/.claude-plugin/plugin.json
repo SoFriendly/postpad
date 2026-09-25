@@ -1,0 +1,22 @@
+{
+  "name": "postpad",
+  "version": "0.1.0",
+  "description": "Keep an entry in your PostPad showing what Claude Code last finished, or that it's waiting for your approval. No notifications.",
+  "author": { "name": "PostPad" },
+  "homepage": "https://postpad.dev",
+  "userConfig": {
+    "ingest_url": {
+      "type": "string",
+      "title": "PostPad delivery address",
+      "description": "The entry's delivery address, e.g. https://api.postpad.dev/v1/ingest/<entry id>. Copy it from the entry in the PostPad app.",
+      "required": true
+    },
+    "token": {
+      "type": "string",
+      "title": "PostPad entry token",
+      "description": "The entry's token (shown once when the address is created).",
+      "required": true,
+      "sensitive": true
+    }
+  }
+}

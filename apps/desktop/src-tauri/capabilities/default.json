@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Main window. Save dialog + writing the file the user picked (box key PDF, PO Box file); nothing else on disk.",
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "dialog:allow-save",
+    "fs:allow-write-file"
+  ]
+}

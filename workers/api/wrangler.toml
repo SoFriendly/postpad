@@ -1,0 +1,33 @@
+name = "postpad-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Hosted PostPad serves the API at api.postpad.dev. Self-hosters: delete this
+# block to use your *.workers.dev URL, or point it at a zone you own.
+routes = [
+  { pattern = "api.postpad.dev", custom_domain = true }
+]
+
+# D1: the notes + revisions store. This id is the hosted PostPad database.
+# Self-hosters: run `wrangler d1 create postpad` and replace it with yours.
+[[d1_databases]]
+binding = "DB"
+database_name = "postpad"
+database_id = "0aee3da0-af13-4e9b-9056-5fd3d5d697b2"
+migrations_dir = "migrations"
+
+# ADMIN_TOKEN: the operator's token. It can open PO Boxes while opening is closed; it
+# isn't a box itself. Set it on any internet-facing deploy (unset = anyone can open a box).
+#   openssl rand -hex 32 | npx wrangler secret put ADMIN_TOKEN
+# OPEN_BOXES: "true" lets anyone open a PO Box (hosted PostPad sets it as a
+# secret so this file stays closed-by-default for self-hosters):
+#   echo true | npx wrangler secret put OPEN_BOXES
+
+# Opening boxes: at most 5 per minute per client IP.
+[[ratelimits]]
+name = "BOX_RATE_LIMIT"
+namespace_id = "1001"
+simple = { limit = 5, period = 60 }
+
+[observability]
+enabled = true

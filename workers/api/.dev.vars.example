@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local `wrangler dev`. Do NOT commit .dev.vars.
+# Leave ADMIN_TOKEN unset to keep management endpoints open locally.
+# ADMIN_TOKEN="a-strong-random-token"
