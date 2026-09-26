@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { marked } from "marked";
+import { ChevronLeft, Ellipsis, Menu, Plus, RefreshCw, Settings as SettingsIcon, X } from "lucide-react";
 import * as api from "./api";
 import type { Entry, EntryDetail, Revision, DiffLine, Rule } from "./api";
 import { CONNECTORS } from "./connect";
@@ -142,8 +143,8 @@ export default function App() {
         <div className="side-head">
           <span className="stamp-mark" aria-hidden />
           <span className="side-title">PostPad</span>
-          <button className="icon" aria-label="Add sender" title="Add sender (new address)" onClick={() => setCreating(true)}><PlusIcon /></button>
-          <button className="icon" aria-label="Settings" title="Settings" onClick={() => setShowSettings(true)}><GearIcon /></button>
+          <button className="icon" aria-label="Add sender" title="Add sender (new address)" onClick={() => setCreating(true)}><Plus {...ic} /></button>
+          <button className="icon" aria-label="Settings" title="Settings" onClick={() => setShowSettings(true)}><SettingsIcon {...ic} /></button>
         </div>
         <input className="search" type="search" placeholder="Filter entries" value={q} onChange={(e) => setQ(e.target.value)} />
         {err && <div className="err" role="alert" onClick={() => setErr("")}>{err}</div>}
@@ -173,7 +174,7 @@ export default function App() {
       </main>
       <footer className="statusbar">
         <button className={`sb-sync${err ? " sb-bad" : ""}`} title="Check for new deliveries now" onClick={refresh}>
-          {err ? "● offline" : synced ? `● synced ${short(synced)}` : "● connecting"}
+          <RefreshCw {...ic} />{err ? "offline" : synced ? `synced ${short(synced)}` : "connecting"}
         </button>
         <span>{entries.length} entr{entries.length === 1 ? "y" : "ies"}</span>
         {!!fresh && <span className="sb-new">{fresh} new</span>}
@@ -234,10 +235,10 @@ function Pad({ rows, q, loading, onOpen, onAdd, onVisible, onRefresh, onContents
   return (
     <div className="padwrap">
       <div className="padbar">
-        <button className="link" onClick={onContents}>☰ Contents</button>
+        <button className="icon" aria-label="Contents" title="Contents" onClick={onContents}><Menu {...ic} /></button>
         <span className="side-title">PostPad</span>
-        <button className="icon" aria-label="Add sender" onClick={onAdd}><PlusIcon /></button>
-        <button className="icon" aria-label="Settings" onClick={onSettings}><GearIcon /></button>
+        <button className="icon" aria-label="Add sender" onClick={onAdd}><Plus {...ic} /></button>
+        <button className="icon" aria-label="Settings" onClick={onSettings}><SettingsIcon {...ic} /></button>
       </div>
       <div className="pad" ref={ref} {...touch}>
         {(pull > 0 || refreshing) && <div className="ptr" style={{ height: refreshing ? 40 : pull }} aria-live="polite">
@@ -297,15 +298,8 @@ function Loading({ label, small }: { label: string; small?: boolean }) {
   );
 }
 
-// Header icons: Lucide "plus" and "settings" (ISC), drawn at the same size and stroke so they match.
-const svgIcon = (children: React.ReactNode) => (
-  <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>{children}</svg>
-);
-const PlusIcon = () => svgIcon(<path d="M3.5 12h17M12 3.5v17" />); // spans ~the gear's width so they read the same size
-const GearIcon = () => svgIcon(<>
-  <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-  <circle cx="12" cy="12" r="3" />
-</>);
+// Every UI icon is Lucide (lucide-react), same size and stroke via .ic.
+const ic = { className: "ic", strokeWidth: 1.8, "aria-hidden": true } as const;
 
 function CopyButton({ text, label, className }: { text: string; label: string; className?: string }) {
   const [done, setDone] = useState(false);
@@ -313,7 +307,7 @@ function CopyButton({ text, label, className }: { text: string; label: string; c
 }
 
 // One entry on its own: title, who delivered it, the address strip, then the latest
-// delivery filling the pane. History opens as a bottom panel. "‹ Pad" returns to the document.
+// delivery filling the pane. History opens as a bottom panel. "Pad" (back) returns to the document.
 function EntryView({ id, version, onBack, onChange, onDeleted }:
   { id: string; version?: string; onBack: () => void; onChange: () => void; onDeleted: () => void }) {
   const [note, setNote] = useState<EntryDetail | null>(null);
@@ -337,7 +331,7 @@ function EntryView({ id, version, onBack, onChange, onDeleted }:
     api.getRevision(note.id, note.current_revision_id).then(setRev).catch(() => setRev(null));
   }, [note?.id, note?.current_revision_id]);
 
-  const back = <button className="back" onClick={onBack}>‹ Pad</button>;
+  const back = <button className="back" onClick={onBack}><ChevronLeft {...ic} />Pad</button>;
   if (err) return <div className="noteview">{back}<div className="err" role="alert">{err}</div></div>;
   if (!note) return <div className="noteview"><header className="nv-head">{back}</header><Loading label="Opening entry…" /></div>;
 
@@ -396,7 +390,7 @@ function EntryView({ id, version, onBack, onChange, onDeleted }:
             </div>}
       </div>
       {showHistory && <section className="panel" aria-label="History">
-        <div className="panel-head"><span>History</span><button className="icon" aria-label="Close history" onClick={() => setShowHistory(false)}>×</button></div>
+        <div className="panel-head"><span>History</span><button className="icon" aria-label="Close history" onClick={() => setShowHistory(false)}><X {...ic} /></button></div>
         <History id={id} version={note.current_revision_id} viewing={viewId} onView={setViewId} />
       </section>}
     </div>
@@ -433,7 +427,7 @@ function EntryMenu({ pinned, onPin, onDelete }: { pinned: boolean; onPin: () => 
   const pick = (f: () => void) => () => { setOpen(false); f(); };
   return (
     <div className="menu" ref={ref}>
-      <button className="more" aria-label="Entry actions" aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen(!open)}>⋯</button>
+      <button className="more" aria-label="Entry actions" aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen(!open)}><Ellipsis {...ic} /></button>
       {open && <div className="menu-list" role="menu">
         <button role="menuitem" onClick={pick(onPin)}>{pinned ? "Unpin" : "Pin to top"}</button>
         <button role="menuitem" className="danger" onClick={pick(onDelete)}>Remove entry…</button>
@@ -564,7 +558,7 @@ function RuleRows({ label, rows, set }: { label: string; rows: RuleRow[]; set: (
           <input list="pp-keys" aria-label="key" placeholder="key, e.g. status" value={r.key} onChange={(e) => edit(i, { key: e.target.value })} />
           <span className="hint">equals</span>
           <input aria-label="values" placeholder="failed, error" value={r.values} onChange={(e) => edit(i, { values: e.target.value })} />
-          <button className="link" aria-label="remove rule" onClick={() => set(rows.filter((_, j) => j !== i))}>×</button>
+          <button className="link" aria-label="remove rule" onClick={() => set(rows.filter((_, j) => j !== i))}><X {...ic} /></button>
         </div>
       ))}
       <button className="link" onClick={() => set([...rows, { key: "", values: "" }])}>+ add rule</button>

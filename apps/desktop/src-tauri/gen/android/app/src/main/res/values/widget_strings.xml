@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="widget_pad_label">PostPad</string>
+    <string name="widget_pad_label">List</string>
     <string name="widget_pad_description">Your pad: every entry, newest delivery first to glance.</string>
-    <string name="widget_entry_label">PostPad entry</string>
+    <string name="widget_entry_label">Single Entry</string>
     <string name="widget_entry_description">One entry of your pad, always showing its latest delivery.</string>
     <string name="widget_pick_title">Pin an entry</string>
     <string name="widget_pick_entry">Tap to pick an entry.</string>
