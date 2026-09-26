@@ -14,11 +14,32 @@
   --ok: #4f7a45;
   --bad: #a8412f;
   --wash: #f3ecdd;
+  --band: #9a4b35;        /* filled rust surfaces: status band, primary buttons, stamp face */
   --band-ink: #fbf4e6;
   --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "Roboto Mono", Consolas, monospace;
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Noto Serif", serif;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, sans-serif;
   font-size: 13px; line-height: 1.45; color: var(--ink); color-scheme: light;
+}
+/* Dark: warm near-black paper, cream ink, a lighter rust for text and a deeper one for filled bands. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #d88a6a;
+    --band: #7e3e2b;
+    --bg: #1b1916;
+    --side: #221f1b;
+    --hover: #2c2823;
+    --sel: color-mix(in oklab, var(--accent) 20%, var(--side));
+    --line: #38322b;
+    --ink: #ebe3d5;
+    --muted: #a0968a;
+    --ok: #86b877;
+    --bad: #e2765f;
+    --wash: #28241f;
+    color-scheme: dark;
+  }
+  .backdrop { background: rgba(0, 0, 0, .5); }
+  .stamp-art { opacity: .85; }
 }
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; height: 100%; }
@@ -42,8 +63,8 @@ button {
 button:hover { background: var(--hover); }
 button:disabled { opacity: .45; cursor: default; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 1px solid var(--accent); outline-offset: 1px; }
-button.primary { background: var(--accent); border-color: var(--accent); color: var(--band-ink); }
-button.primary:hover { background: color-mix(in oklab, var(--accent) 88%, #000); }
+button.primary { background: var(--band); border-color: var(--band); color: var(--band-ink); }
+button.primary:hover { background: color-mix(in oklab, var(--band) 88%, #000); }
 button.on { background: var(--sel); border-color: color-mix(in oklab, var(--accent) 40%, var(--line)); }
 button.link { border: none; background: none; color: var(--accent); padding: 2px 4px; }
 button.link:hover { text-decoration: underline; }
@@ -73,7 +94,7 @@ code.tok { color: var(--accent); }
   filter: drop-shadow(0 1px 1px rgba(70, 55, 30, .25));
 }
 .stamp-mark::before {
-  content: ""; display: block; height: 100%; background-color: var(--accent);
+  content: ""; display: block; height: 100%; background-color: var(--band);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 11' fill='none' stroke='%23fbf4e6' stroke-width='1.3' stroke-linejoin='round'%3E%3Crect x='.7' y='.7' width='14.6' height='9.6' rx='.5'/%3E%3Cpath d='M1 1.2 8 6.2l7-5'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: center; background-size: 70%;
 }
@@ -236,7 +257,7 @@ code.tok { color: var(--accent); }
 /* The stamp's colored band: rust with cream lettering. */
 .statusbar {
   grid-area: status; display: flex; align-items: center; gap: 14px; height: 24px; padding: 0 12px; font-size: 11.5px;
-  background: var(--accent); color: color-mix(in oklab, var(--band-ink) 82%, var(--accent)); box-sizing: content-box; padding-bottom: env(safe-area-inset-bottom);
+  background: var(--band); color: color-mix(in oklab, var(--band-ink) 82%, var(--band)); box-sizing: content-box; padding-bottom: env(safe-area-inset-bottom);
 }
 .sb-sync { border: none; background: none; min-height: 0; padding: 0; font-size: inherit; color: inherit; }
 .sb-sync:hover { background: none; text-decoration: underline; }

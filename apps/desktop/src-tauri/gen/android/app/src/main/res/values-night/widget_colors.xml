@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PostPad widget palette (dark). -->
+<resources>
+    <color name="pp_paper">#1E1B17</color>
+    <color name="pp_ink">#ECE4D6</color>
+    <color name="pp_muted">#A39787</color>
+    <color name="pp_line">#3A342C</color>
+    <color name="pp_band">#7E3E2B</color>
+    <color name="pp_on_band">#FBF4E6</color>
+</resources>

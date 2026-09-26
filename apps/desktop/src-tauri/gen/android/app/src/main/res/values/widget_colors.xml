@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PostPad widget palette (light). Night values in values-night/. Mirrors App.css tokens. -->
+<resources>
+    <color name="pp_paper">#FCF9F2</color>
+    <color name="pp_ink">#2E2A24</color>
+    <color name="pp_muted">#7D7263</color>
+    <color name="pp_line">#E0D6C2</color>
+    <color name="pp_band">#9A4B35</color>
+    <color name="pp_on_band">#FBF4E6</color>
+</resources>

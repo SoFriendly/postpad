@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/line"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingStart="16dp" android:paddingEnd="16dp" android:paddingTop="2dp" android:paddingBottom="2dp"
+    android:textColor="@color/pp_ink" android:textSize="14sp" android:lineSpacingMultiplier="1.15" />

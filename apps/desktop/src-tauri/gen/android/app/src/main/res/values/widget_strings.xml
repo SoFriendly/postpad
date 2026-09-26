@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_pad_label">PostPad</string>
+    <string name="widget_pad_description">Your pad: every entry, newest delivery first to glance.</string>
+    <string name="widget_entry_label">PostPad entry</string>
+    <string name="widget_entry_description">One entry of your pad, always showing its latest delivery.</string>
+    <string name="widget_pick_title">Pin an entry</string>
+    <string name="widget_pick_entry">Tap to pick an entry.</string>
+    <string name="widget_entry_gone">This entry was removed.</string>
+    <string name="widget_no_box">Open PostPad to connect your PO Box.</string>
+    <string name="widget_no_entries">No entries yet. Add a sender in PostPad.</string>
+    <string name="widget_no_mail">No mail yet</string>
+    <string name="widget_synced">synced %1$s</string>
+    <string name="widget_refresh">Check for new deliveries</string>
+</resources>

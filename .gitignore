@@ -10,4 +10,5 @@ target/
 *.log
 .idea/
 .vscode/
-apps/*/src-tauri/gen/
+# Tauri regenerates the capability schemas; the Android project (widgets, signing) is tracked.
+apps/*/src-tauri/gen/schemas/

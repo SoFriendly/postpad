@@ -56,6 +56,21 @@ Known limits: on Apple, the widget works only in **release/TestFlight builds, no
 - **[`Choochmeque/tauri-apple-extensions`](https://github.com/Choochmeque/tauri-apple-extensions)** — CLI that scaffolds Apple extension targets into XcodeGen and wires up App Groups. Ships mainly a Share extension today; useful as the scaffolding mechanism even if we write the widget ourselves.
 - Tracking: [plugins-workspace#2738](https://github.com/tauri-apps/plugins-workspace/issues/2738).
 
+## Android: built (2026-09-26)
+
+Two home-screen widgets live in the tracked Android project, `apps/desktop/src-tauri/gen/android/app/src/main/java/com/postpad/app/widget/` (plain `AppWidgetProvider` + `RemoteViews` list services, no Glance/Compose, no extra dependencies):
+
+- **PostPad (pad list)** — resizable; every entry with title, age, sender and a one-line summary. Tap an entry to open it in the app; ↻ refreshes.
+- **PostPad entry** — resizable; pinned to one entry chosen when the widget is added (reconfigurable): title, sender · age, and the body as text lines.
+
+How data flows:
+- **App → widgets:** the web UI calls `window.PostPadWidgets.sync(base, boxKey, entries)` (a `JavascriptInterface` added in `MainActivity.onWebViewCreate`) after every pad fetch; the bridge writes SharedPreferences and redraws all widgets. Leaving the PO Box syncs an empty key, which clears them.
+- **Widgets on their own:** every ~30 min (`updatePeriodMillis`) and on ↻, the widget fetches `GET /v1/pad` with the saved box key (off the main thread via `goAsync`), so it stays fresh while the app is closed. This departs from the "widgets never call the API" rule above on purpose: that rule is about iOS/WidgetKit budgets; Android broadcast receivers can make a short request.
+- **Widget → app:** a tap opens `MainActivity` with the entry id; the web UI takes it via `PostPadWidgets.takeOpenEntry()` (at launch, on resume, or on a `postpad-widget-open` event when already running) and opens that entry.
+- Light/dark follow the system via `values/` and `values-night/widget_colors.xml` (same palette as the app).
+
+`gen/android` is now tracked in git (only `gen/schemas` is ignored) so the widgets survive `tauri android init`; release signing applies only when `~/.config/postpad/android/keystore.properties` exists.
+
 ## Plan for PostPad
 
 1. **Now (this slice):** ship the Tauri app + Worker API. Widget code is **not** built yet — it's blocked on native tooling, not on the API. The `WidgetPin` concept (note_id + size, per requirements) is deferred; the app just fetches and renders note bodies, which is the same data a widget will show.

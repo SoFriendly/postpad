@@ -27,6 +27,11 @@ const markSeen = (items: { id: string; updated_at: string }[], force = false) =>
   localStorage.setItem(SEEN_KEY, JSON.stringify(s));
 };
 
+// Android home-screen widgets (src-tauri/gen/android/.../widget): the native side exposes this bridge.
+declare global {
+  interface Window { PostPadWidgets?: { sync(base: string, key: string, entries: string): void; takeOpenEntry(): string } }
+}
+
 export default function App() {
   const [entries, setEntries] = useState<Entry[]>([]);   // the pad, in order
   const [q, setQ] = useState("");
@@ -61,6 +66,26 @@ export default function App() {
     const t = setInterval(refresh, POLL_MS);
     return () => clearInterval(t);
   }, [boxKey]);
+
+  // Widgets: hand them the pad after every sync (and the key, so they can refresh on their own);
+  // an empty key clears them when this device leaves the PO Box.
+  useEffect(() => {
+    if (!window.PostPadWidgets || (boxKey && !synced)) return;
+    const slim = entries.map(({ id, title, updated_at, markdown, source, pinned }) => ({ id, title, updated_at, markdown, source, pinned }));
+    window.PostPadWidgets.sync(api.getBase(), boxKey, JSON.stringify(slim));
+  }, [entries, boxKey, synced]);
+  // A widget tap asks to open an entry: at launch, on return to the app, or while it's open.
+  useEffect(() => {
+    const take = () => {
+      const id = window.PostPadWidgets?.takeOpenEntry();
+      if (id) { setToc(false); setCurrent(id); setFocus(id); }
+    };
+    take();
+    const onVisible = () => { if (document.visibilityState === "visible") take(); };
+    addEventListener("postpad-widget-open", take);
+    document.addEventListener("visibilitychange", onVisible);
+    return () => { removeEventListener("postpad-widget-open", take); document.removeEventListener("visibilitychange", onVisible); };
+  }, []);
 
   // Back (Android button / gesture, browser back): anything open over the pad is one history
   // step, so back closes it (dialog, then drawer, then entry) instead of leaving the app.

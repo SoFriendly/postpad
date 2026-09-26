@@ -32,6 +32,10 @@ Vintage-stamp palette framing a calm workbench (the reference: low-saturation pr
 
 Stamp touches, and only these: a small perforated stamp mark by "PostPad"; the status bar as the stamp's colored band (rust, cream lettering); one engraved line-art stamp (`public/stamp-art.svg`) in the empty main pane. Nothing decorative inside a note.
 
+## Dark mode
+
+Follows the system (`prefers-color-scheme`): warm near-black paper (`--bg` #1b1916, `--side` #221f1b), cream ink (#ebe3d5), a lighter rust `--accent` (#d88a6a) for text/links/selection, and a deeper `--band` (#7e3e2b) for filled rust surfaces (status bar, primary buttons, stamp face) so cream lettering keeps its contrast. The Android widgets use the same palette via `values-night/widget_colors.xml`.
+
 ## Responsive
 
 ≤720px: the pad is home (pull down from the top to check for new deliveries now), under a bar with **☰ Contents** (opens the sidebar as a drawer), PostPad, `+` and settings. An opened entry fills the screen with "‹ Pad"; the Android back button/gesture closes whatever is open over the pad (dialog, then Contents drawer, then entry) and only leaves the app from the pad itself; History takes the bottom half. Phone chrome is sized for thumbs: 56px top bar with 44px icon targets, 36px status bar, 40–44px header buttons, larger entry links. Safe-area insets, 16px inputs (no iOS focus zoom).
