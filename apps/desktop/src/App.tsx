@@ -142,8 +142,8 @@ export default function App() {
         <div className="side-head">
           <span className="stamp-mark" aria-hidden />
           <span className="side-title">PostPad</span>
-          <button className="icon" aria-label="Add sender" title="Add sender (new address)" onClick={() => setCreating(true)}>+</button>
-          <button className="icon" aria-label="Settings" title="Settings" onClick={() => setShowSettings(true)}>⚙</button>
+          <button className="icon" aria-label="Add sender" title="Add sender (new address)" onClick={() => setCreating(true)}><PlusIcon /></button>
+          <button className="icon" aria-label="Settings" title="Settings" onClick={() => setShowSettings(true)}><GearIcon /></button>
         </div>
         <input className="search" type="search" placeholder="Filter entries" value={q} onChange={(e) => setQ(e.target.value)} />
         {err && <div className="err" role="alert" onClick={() => setErr("")}>{err}</div>}
@@ -236,8 +236,8 @@ function Pad({ rows, q, loading, onOpen, onAdd, onVisible, onRefresh, onContents
       <div className="padbar">
         <button className="link" onClick={onContents}>☰ Contents</button>
         <span className="side-title">PostPad</span>
-        <button className="icon" aria-label="Add sender" onClick={onAdd}>+</button>
-        <button className="icon" aria-label="Settings" onClick={onSettings}>⚙</button>
+        <button className="icon" aria-label="Add sender" onClick={onAdd}><PlusIcon /></button>
+        <button className="icon" aria-label="Settings" onClick={onSettings}><GearIcon /></button>
       </div>
       <div className="pad" ref={ref} {...touch}>
         {(pull > 0 || refreshing) && <div className="ptr" style={{ height: refreshing ? 40 : pull }} aria-live="polite">
@@ -296,6 +296,16 @@ function Loading({ label, small }: { label: string; small?: boolean }) {
     </div>
   );
 }
+
+// Header icons: Lucide "plus" and "settings" (ISC), drawn at the same size and stroke so they match.
+const svgIcon = (children: React.ReactNode) => (
+  <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>{children}</svg>
+);
+const PlusIcon = () => svgIcon(<path d="M3.5 12h17M12 3.5v17" />); // spans ~the gear's width so they read the same size
+const GearIcon = () => svgIcon(<>
+  <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+  <circle cx="12" cy="12" r="3" />
+</>);
 
 function CopyButton({ text, label, className }: { text: string; label: string; className?: string }) {
   const [done, setDone] = useState(false);
