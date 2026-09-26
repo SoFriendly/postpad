@@ -34,7 +34,7 @@ Stamp touches, and only these: a small perforated stamp mark by "PostPad"; the s
 
 ## Responsive
 
-≤720px: the pad is home (pull down from the top to check for new deliveries now), under a bar with **☰ Contents** (opens the sidebar as a drawer), PostPad, `+` and settings. An opened entry fills the screen with "‹ Pad"; History takes the bottom half. Phone chrome is sized for thumbs: 56px top bar with 44px icon targets, 36px status bar, 40–44px header buttons, larger entry links. Safe-area insets, 16px inputs (no iOS focus zoom).
+≤720px: the pad is home (pull down from the top to check for new deliveries now), under a bar with **☰ Contents** (opens the sidebar as a drawer), PostPad, `+` and settings. An opened entry fills the screen with "‹ Pad"; the Android back button/gesture closes whatever is open over the pad (dialog, then Contents drawer, then entry) and only leaves the app from the pad itself; History takes the bottom half. Phone chrome is sized for thumbs: 56px top bar with 44px icon targets, 36px status bar, 40–44px header buttons, larger entry links. Safe-area insets, 16px inputs (no iOS focus zoom).
 
 ## Not yet
 

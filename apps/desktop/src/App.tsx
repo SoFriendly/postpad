@@ -62,6 +62,34 @@ export default function App() {
     return () => clearInterval(t);
   }, [boxKey]);
 
+  // Back (Android button / gesture, browser back): anything open over the pad is one history
+  // step, so back closes it (dialog, then drawer, then entry) instead of leaving the app.
+  // Closing it from the UI consumes that step too, so no dead back press is left behind.
+  const layered = !!(creating || showSettings || toc || focus);
+  const pushed = useRef(false), ignorePop = useRef(false);
+  useEffect(() => {
+    if (layered && !pushed.current) { history.pushState({ postpad: "layer" }, ""); pushed.current = true; }
+    if (!layered && pushed.current) { pushed.current = false; ignorePop.current = true; history.back(); }
+  }, [layered]);
+  useEffect(() => {
+    const pop = () => {
+      if (ignorePop.current) { ignorePop.current = false; return; }
+      // Still something open after closing the top layer? Keep a step for the next back.
+      pushed.current = [creating, showSettings, toc, focus].filter(Boolean).length > 1;
+      if (pushed.current) history.pushState({ postpad: "layer" }, "");
+      if (creating) setCreating(false);
+      else if (showSettings) setShowSettings(false);
+      else if (toc) setToc(false);
+      else if (focus) {
+        const id = focus;
+        setFocus(null); setCurrent(id);
+        requestAnimationFrame(() => document.getElementById(`e-${id}`)?.scrollIntoView({ block: "start" }));
+      }
+    };
+    addEventListener("popstate", pop);
+    return () => removeEventListener("popstate", pop);
+  }, [creating, showSettings, toc, focus]);
+
   const focused = entries.find((e) => e.id === focus);
   useEffect(() => { if (focused) markSeen([focused], true); }, [focused?.id, focused?.updated_at]);
   const s = seen();
